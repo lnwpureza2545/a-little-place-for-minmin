@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Little Place for Minmin</title>
+<style>
+:root {
+  --site-primary: #B85F80;
+  --site-on-primary: #FFFFFF;
+  --site-secondary: #F5DDE5;
+  --site-on-secondary: #633D4A;
+  --site-background: #FFF8F6;
+  --site-on-background: #49353B;
+  --site-font-body: "Sukhumvit Set", "Noto Sans Thai", system-ui, sans-serif;
+  --site-font-heading: "Sukhumvit Set", "Noto Sans Thai", system-ui, sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  --surface: light-dark(#FFFFFF, #292126);
+  --soft-surface: light-dark(#FFF0F3, #382A31);
+  --muted: #76545F;
+  --line: #EAD5DC;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body { margin: 0; font-family: var(--site-font-body); background: var(--site-background); color: var(--site-on-background); }
+#app { min-height: 100vh; width: 100%; background-color: var(--site-background); color: var(--site-on-background); overflow: hidden; position: relative; }
+.decor { position: absolute; pointer-events: none; opacity: var(--site-decoration-opacity); color: var(--site-primary); }
+.sparkle { font-size: 24px; animation: float 4s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-9px) rotate(10deg); } }
+.wrap { width: min(100% - 32px, 760px); margin: auto; position: relative; z-index: 1; }
+header { padding: calc(38px * var(--site-spacing-scale)) 0 20px; text-align: center; }
+.eyebrow { color: var(--site-primary); letter-spacing: .16em; text-transform: uppercase; font-size: 11px; font-weight: 700; }
+h1,h2,h3 { font-family: var(--site-font-heading); }
+h1 { font-size: calc(clamp(34px, 8vw, 58px) * var(--site-heading-scale)); line-height: 1.16; margin: 12px 0 8px; font-weight: 800; letter-spacing: -.04em; }
+.subtitle { color: var(--muted); font-size: 15px; }
+.hero { background: var(--site-secondary); color: var(--site-on-secondary); border-radius: calc(30px * var(--site-radius-scale)); padding: clamp(25px, 6vw, 48px); text-align: center; position: relative; overflow: hidden; }
+.hero .heart { font-size: 42px; display: inline-block; animation: heartbeat 1.7s infinite; }
+@keyframes heartbeat { 10%,30% { transform: scale(1.12); } 20%,40%,100% { transform: scale(1); } }
+.hero p { max-width: 510px; margin: 12px auto 0; line-height: 1.9; }
+section { margin: 28px 0; }
+.section-title { text-align: center; font-size: calc(23px * var(--site-heading-scale)); margin: 0 0 14px; }
+.note { background: var(--surface); border: 1px solid var(--line); border-radius: calc(22px * var(--site-radius-scale)); padding: 24px; box-shadow: 0 12px 35px #8b53600d; }
+.note p { line-height: 1.95; margin: 0 0 12px; }
+.note p:last-child { margin-bottom: 0; }
+.signature { text-align: right; color: var(--site-primary); font-weight: 700; margin-top: 15px !important; }
+.reveal { display: block; margin: 0 auto 14px; background: var(--site-primary); color: var(--site-on-primary); }
+.hidden-letter { display: none; margin-top: 14px; padding: 16px; border-radius: 16px; background: var(--soft-surface); line-height: 1.9; }
+.hidden-letter.show { display: block; animation: appear .45s ease both; }
+@keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.playful { text-align: center; background: var(--surface); border: 1px dashed var(--site-primary); border-radius: calc(22px * var(--site-radius-scale)); padding: 22px; }
+.playful p { min-height: 52px; line-height: 1.8; color: var(--muted); }
+.date-ideas { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.date-idea { background: var(--surface); border: 1px solid var(--line); border-radius: 17px; padding: 15px 9px; text-align: center; color: var(--site-on-background); }
+.date-idea[aria-pressed="true"] { background: var(--site-secondary); border-color: var(--site-primary); }
+.tiny { color: var(--muted); font-size: 12px; text-align: center; line-height: 1.7; }
+.memories { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.memory { background: var(--surface); border: 1px solid var(--line); border-radius: calc(18px * var(--site-radius-scale)); padding: 17px 12px; text-align: center; }
+.memory .emoji { font-size: 27px; }
+.memory strong { display: block; margin: 8px 0 4px; font-size: 14px; }
+.memory small { color: var(--muted); line-height: 1.5; }
+.question { background: var(--soft-surface); border-radius: calc(26px * var(--site-radius-scale)); text-align: center; padding: 28px 18px; }
+.question h2 { margin: 0 0 8px; font-size: 25px; }
+.question p { color: var(--muted); margin: 0 0 20px; }
+.buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+button { border: 0; cursor: pointer; font: inherit; font-weight: 700; border-radius: 999px; padding: 12px 22px; transition: transform .18s, box-shadow .18s; }
+button:hover { transform: translateY(-2px); box-shadow: 0 8px 18px #9e637522; }
+.yes { background: var(--site-primary); color: var(--site-on-primary); }
+.later { background: var(--surface); color: var(--site-on-secondary); border: 1px solid var(--line); }
+#answer { min-height: 30px; margin-top: 18px; color: var(--site-primary); font-weight: 700; line-height: 1.7; }
+footer { text-align: center; padding: 15px 0 42px; color: var(--muted); font-size: 12px; }
+@media (max-width:520px) { .memories { grid-template-columns: 1fr; } .memory { display: flex; align-items: center; text-align: left; gap: 13px; } .memory strong { margin: 0 0 3px; } }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<main id="app">
+  <span class="decor sparkle" style="top:7%;left:8%">✦</span><span class="decor sparkle" style="top:19%;right:9%;animation-delay:1s">♡</span><span class="decor sparkle" style="top:57%;left:5%;animation-delay:2s">✧</span><span class="decor sparkle" style="top:78%;right:7%;animation-delay:.5s">♡</span>
+  <div class="wrap">
+    <header>
+      <div class="eyebrow">just a little something for you</div>
+      <h1>A Little Place<br>for Minmin</h1>
+      <div class="subtitle">พื้นที่เล็ก ๆ ที่พี่เพียวแอบตั้งใจทำให้มินมิน ♡</div>
+    </header>
+    <div class="hero">
+      <div class="heart">♡</div>
+      <h2 style="font-size:25px;margin:8px 0">ถึงมินมินคนเก่ง</h2>
+      <p>ทำมาให้ก่อนวันเจอกันครับบ<br>ไม่มีอะไรพิเศษมาก แค่อยากให้มินมินลองเปิดดู เผื่อจะยิ้มออกมานิดนึง 555</p>
+    </div>
+    <section>
+      <h2 class="section-title">เพลงนี้พี่เพียวอยากให้มินมินฟัง ♡</h2>
+      <div class="note" style="text-align:center">
+        <p>เพราะเธอนั้นเป็นเหมือนดั่งโลกทั้งใบ (My Vanilla) · Dept</p>
+        <p>ลองกดฟังดูนะครับบ พี่ตั้งใจเลือกเพลงนี้ให้เลย 🤍</p>
+        <div style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:16px;margin-top:14px">
+          <iframe src="https://www.youtube.com/embed/0jzr501QApk?rel=0" title="Dept - เพราะเธอนั้นเป็นเหมือนดั่งโลกทั้งใบ (My Vanilla) Official MV" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe>
+        </div>
+        <p style="margin:12px 0 0"><a href="https://www.youtube.com/watch?v=0jzr501QApk" target="_blank" rel="noopener noreferrer" style="color:var(--site-primary);font-weight:700;text-decoration:underline">ถ้าตัวเล่นไม่ขึ้น กดฟังเพลงใน YouTube ตรงนี้ได้นะ ♡</a></p>
+      </div>
+    </section>
+    <section>
+      <h2 class="section-title">จากในไลฟ์วันนั้น จนจะได้เจอกันแล้ว ♡</h2>
+      <div class="note">
+        <p><strong>24 กรกฎาคม 2026 · ข้อความแรกจากมินมิน</strong></p>
+        <p>ตอนนั้นพี่ก็เป็น User คนนึงในไลฟ์นี่แหละ ส่งแท่งไฟไปให้แล้วมินมินก็ทักมาขอบคุณ ใครจะคิดว่าจากวันนั้นเราจะได้คุยกันยาวมาจนถึงตอนนี้เนอะ 555</p>
+        <p><strong>1 สิงหาคม 2026 · เริ่มมีคำหวาน ๆ ให้เขินกันแล้ว</strong></p>
+        <p>จำได้ว่าช่วงนั้นเริ่มมีคำว่า “รักพี่เพียวว” แล้วด้วย อ่านทีไรก็แอบยิ้มทุกที 5555 จากตอนแรกที่เป็นแค่คนในไลฟ์ ค่อย ๆ กลายเป็นคนที่ได้คุยกันทุกวันซะแล้ว</p>
+        <p>หลังจากนั้นเราก็คุยกันมาเรื่อย ๆ มีทั้งเรื่องเล็ก ๆ น้อย ๆ เรื่องเรียน เรื่องในแต่ละวัน บางทีก็แค่ถามว่ากินข้าวหรือยัง แต่พี่ก็ชอบนะ</p>
+        <p>แล้วจากที่เคยเห็นกันแค่ในไลฟ์ ตอนนี้กำลังจะได้นั่งกินข้าวด้วยกันจริง ๆ แล้ว แอบตื่นเต้นเหมือนกันนะเนี่ย 🤍</p>
+        <p class="signature">จาก User คนนั้น · พี่เพียวเองครับ ♡</p>
+      </div>
+    </section>
+    <section>
+      <h2 class="section-title">มีซองจดหมายถึงมินมินหนึ่งฉบับ 💌</h2>
+      <div class="note" style="text-align:center">
+        <div style="font-size:42px;margin-bottom:8px">✉️</div>
+        <p>มีอะไรอยากบอกนิดหน่อย อ่านแล้วห้ามแซวนะ 555</p>
+        <button class="reveal" id="letterBtn">เปิดจดหมาย ♡</button>
+        <div class="hidden-letter" id="hiddenLetter">ถึงมินมิน<br>ขอบคุณนะที่ตกลงไปเที่ยวด้วยกัน พี่ดีใจมากเลย จากที่คุยกันผ่านแชตมาตลอด ในที่สุดก็จะได้เจอกันแล้วว<br>วันนั้นไปหาอะไรกินอร่อย ๆ เดินเล่นกัน ไม่ต้องแพลนแน่นก็ได้ ค่อย ๆ ดูว่าจะไปไหนต่อดี<br>ถ้าพี่เขินหรือพูดไม่ค่อยเก่งก็อย่าเพิ่งขำนะ 5555<br>เจอกันนะครับ 🌷</div>
+      </div>
+    </section>
+    <section>
+      <h2 class="section-title">จดหมายเล็ก ๆ จากพี่เพียว 💌</h2>
+      <div class="note">
+        <p>ช่วงนี้มีเรื่องให้คุยกันทุกวันเลยเนอะ ขอบคุณที่คอยเล่าอะไรให้พี่ฟังนะครับ</p>
+        <p>พี่ชอบเวลามินมินมาเล่าเรื่องนู้นเรื่องนี้ให้ฟัง ถึงบางทีจะเป็นเรื่องธรรมดามาก ๆ แต่พี่ก็ฟังเพลินนะ</p>
+        <p>ถ้าวันไหนเรียนเหนื่อยหรือเจออะไรหนัก ๆ ก็อย่าลืมพักบ้างนะ ไม่ต้องเก่งตลอดเวลาก็ได้</p>
+        <p>ไว้เจอกันแล้วพี่จะพาไปกินของอร่อย ๆ นะครับบบ :)</p>
+        <p class="signature">— จากพี่เพียว ♡</p>
+      </div>
+    </section>
+    <section>
+      <h2 class="section-title">เรื่องที่พี่ชอบเวลาคุยกับมินมิน ✨</h2>
+      <div class="memories">
+        <div class="memory"><div class="emoji">🌷</div><div><strong>เวลามินมินยิ้ม</strong><small>เห็นแล้วยิ้มตามทุกทีเลย</small></div></div>
+        <div class="memory"><div class="emoji">☁️</div><div><strong>ตอนคุยกัน</strong><small>คุยเพลินจนบางทีลืมดูเวลา</small></div></div>
+        <div class="memory"><div class="emoji">🍡</div><div><strong>วันที่จะได้เจอ</strong><small>รอไปกินของอร่อยด้วยกันแล้ว</small></div></div>
+      </div>
+    </section>
+    <section>
+      <h2 class="section-title">วันนั้นไปทำอะไรกันดีน้า 🍡</h2>
+      <div class="date-ideas" id="dateIdeas">
+        <button class="date-idea" aria-pressed="false" data-idea="เดินเล่นคุยกัน">🚶🏻‍♀️<br><strong>เดินเล่น</strong></button>
+        <button class="date-idea" aria-pressed="false" data-idea="กินปิ้งย่างด้วยกัน">🥩<br><strong>ปิ้งย่าง</strong></button>
+        <button class="date-idea" aria-pressed="false" data-idea="หาของหวานกิน">🍰<br><strong>ของหวาน</strong></button>
+      </div>
+      <p class="tiny" id="dateChoice" aria-live="polite">กดเลือกเล่น ๆ ได้นะ หรือจะเอาหมดเลยก็ได้ พี่ไม่ติด 555</p>
+    </section>
+    <section class="question">
+      <div style="font-size:30px;margin-bottom:7px">૮₍ ˶ᵔ ᵕ ᵔ˶ ₎ა</div>
+      <h2>งั้นเจอกันวันนั้นนะมินมิน ♡</h2>
+      <p>พี่รอไม่ไหวแล้วว อยากรู้ว่าตัวจริงจะคุยเก่งเหมือนในแชตมั้ย 5555<br>ไว้ไปกินปิ้งย่าง เดินเล่น แล้วก็หาอะไรอร่อย ๆ กินกันนะครับ 🌷</p>
+    </section>
+    <footer>made with ♡ by Pure · for Minmin</footer>
+  </div>
+</main>
+<script>
+document.getElementById('letterBtn').addEventListener('click', () => {
+  const letter = document.getElementById('hiddenLetter');
+  letter.classList.toggle('show');
+  document.getElementById('letterBtn').textContent = letter.classList.contains('show') ? 'พับจดหมาย ♡' : 'เปิดจดหมาย ♡';
+});
+document.querySelectorAll('.date-idea').forEach((button) => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.date-idea').forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
+    document.getElementById('dateChoice').textContent = `โอเคค วันนั้นไป${button.dataset.idea}กันน้า ♡`;
+  });
+});
+</script>
+</body>
+</html>
